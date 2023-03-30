@@ -17,7 +17,6 @@ package com.webank.ai.fate.board.bootstrap;
 
 
 import org.apache.catalina.Context;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.tomcat.websocket.server.WsSci;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -31,11 +30,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, MybatisAutoConfiguration.class})
 @ComponentScan(basePackages = {"com.webank.*"})
@@ -44,41 +38,11 @@ import java.sql.Timestamp;
 @EnableScheduling
 public class Bootstrap {
     public static void main(String[] args) {
-//        long timestamp = 1680078127L;
-//        long timestamp1 = 1680078732L;
-//        long timestampValue = new Timestamp(System.currentTimeMillis()).getTime();
-//        System.out.println(timestampValue);
-//        if (timestamp < timestampValue - 60000 || timestamp > timestampValue + 60000) {
-//            System.out.println("time error");
-//        }
-//
-//        String nonce = "HYbBIn8wWSSK";
-//        String passwordValue = "49df4a4c0ba6c9d7a55bf60ccf4d57b30b263d9d";
-//        String digest = "";
-//        try {
-//            digest = computeDigest(nonce + timestamp, passwordValue);
-//        } catch (Exception e) {
-//            System.out.println("passwd error");
-//            System.out.println(digest);
-//        }
-
         try {
             ConfigurableApplicationContext context = SpringApplication.run(Bootstrap.class, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static String computeDigest(String message, String secret) throws Exception {
-        SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA1");
-
-        Mac mac = Mac.getInstance("HmacSHA1");
-        mac.init(secretKey);
-
-        byte[] digest = mac.doFinal(message.getBytes());
-        byte[] hexDigest = new Hex().encode(digest);
-
-        return new String(hexDigest, StandardCharsets.ISO_8859_1);
     }
 
     @Bean
